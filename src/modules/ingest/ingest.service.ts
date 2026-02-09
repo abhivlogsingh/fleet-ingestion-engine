@@ -47,13 +47,13 @@ export class IngestService {
 
     const timestamp = new Date(dto.timestamp);
 
-    // ⏱️ minute bucket for analytics
+    // ⏱minute bucket for analytics
     const bucketTime = new Date(timestamp);
     bucketTime.setSeconds(0, 0);
 
     return this.dataSource.transaction(async (manager) => {
       // ===============================
-      // 🚗 VEHICLE INGEST
+      // VEHICLE INGEST
       // ===============================
       if (hasVehicle) {
         const live = await manager.findOne(VehicleLiveEntity, {
@@ -94,7 +94,7 @@ export class IngestService {
       }
 
       // ===============================
-      // 🔌 METER INGEST
+      //  METER INGEST
       // ===============================
       const live = await manager.findOne(MeterLiveEntity, {
         where: { meterId: dto.meterId },
@@ -109,7 +109,7 @@ export class IngestService {
         bucketTime,
         acDelta: Math.max(deltaAc, 0),
         voltage: dto.voltage,
-        timestamp, // ✅ FIX: NOT NULL column
+        timestamp, // FIX: NOT NULL column
       });
 
       await manager.upsert(

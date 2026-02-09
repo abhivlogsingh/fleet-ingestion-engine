@@ -69,6 +69,17 @@ the system must correlate both streams to compute efficiency and detect anomalie
 Accepts two payload types:
 
 **Vehicle Telemetry**
+
+The ingestion API is polymorphic and accepts **two types of telemetry payloads**:
+- Vehicle Telemetry
+- Meter Telemetry
+
+A single request must contain **either `vehicleId` or `meterId`**, never both.
+
+---
+
+### Vehicle Telemetry Payload
+
 ```json
 {
   "vehicleId": "EV-1",
@@ -78,12 +89,31 @@ Accepts two payload types:
   "timestamp": "2026-02-09T10:00:00Z"
 }
 
-**Meter Telemetry**
-
+```json
 {
   "meterId": "MTR-1",
   "kwhConsumedAc": 1.5,
   "voltage": 230,
   "timestamp": "2026-02-09T10:00:00Z"
+}
+
+---
+
+### Analytics API
+
+1. Aggregates vehicle DC energy from vehicle_telemetry_history using dc_delta.
+2. Aggregates AC energy from meter_telemetry_history using ac_delta.
+3. Correlates data using aligned bucket_time windows.
+4. Avoids full table scans by querying only the last 24 hours.
+
+efficiency = total_dc_delivered / total_ac_consumed
+
+{
+  "vehicleId": "EV-1",
+  "windowHours": 24,
+  "totalAcConsumed": 133,
+  "totalDcDelivered": 111,
+  "efficiency": 0.83,
+  "avgBatteryTemp": 33.1
 }
 
