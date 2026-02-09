@@ -3,18 +3,32 @@ version: "3.9"
 services:
   postgres:
     image: postgres:15
+    container_name: postgres_db
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres123
+      POSTGRES_PASSWORD: postgres@123
       POSTGRES_DB: ev_energy
     ports:
       - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - ev_net
 
   backend:
     build: .
+    container_name: nest_backend
     ports:
       - "3000:3000"
     env_file:
       - .env
     depends_on:
       - postgres
+    networks:
+      - ev_net
+
+volumes:
+  pgdata:
+
+networks:
+  ev_net:
