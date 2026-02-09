@@ -41,20 +41,24 @@ the system must correlate both streams to compute efficiency and detect anomalie
    git clone <your-repo-url>
    cd fleet-ingestion-engine
 
-# NPM Start Services
+# install 
   npm install
+
+# NPM Start Services
   npm run start:dev
 
 # Docker build & start device
 
-  docker-compose up --build
-  docker-compose up -d --build
+  1. docker-compose up --build
+  2. docker-compose up -d --build
   
   # Everything is Running
     docker ps
   
-  # http://localhost:3000/ - 
-    fleet ingestion engine running
+  # Running
+   1. http://localhost:3000/
+    
+      fleet ingestion engine running
   
 
 ## API Overview
