@@ -1,7 +1,7 @@
 import { Entity, Column, PrimaryGeneratedColumn, Index } from 'typeorm';
 
 @Entity('meter_telemetry_history')
-@Index(['meterId', 'timestamp'])
+@Index(['meterId', 'bucketTime'])
 export class MeterHistoryEntity {
   @PrimaryGeneratedColumn()
   id: number;
@@ -9,12 +9,19 @@ export class MeterHistoryEntity {
   @Column({ name: 'meter_id' })
   meterId: string;
 
+  // 🔑 Per-window AC energy (derived at ingest time)
+  @Column('float', { name: 'ac_delta' })
+  acDelta: number;
+
+  // Voltage snapshot for that window (optional analytics)
   @Column('float')
   voltage: number;
 
-  @Column('float', { name: 'kwh_consumed_ac' })
-  kwhConsumedAc: number;
+  // ⏱️ Time bucket for efficient analytics
+  @Column({ name: 'bucket_time', type: 'timestamptz' })
+  bucketTime: Date;
 
+  // 🧾 Raw event timestamp (audit/debug)
   @Column({ type: 'timestamptz' })
   timestamp: Date;
 }
