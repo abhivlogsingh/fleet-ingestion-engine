@@ -38,7 +38,7 @@ the system must correlate both streams to compute efficiency and detect anomalie
 ###
 ###
 # Clone the Repository
-   git clone <your-repo-url>
+   git clone https://github.com/abhivlogsingh/fleet-ingestion-engine.git
    cd fleet-ingestion-engine
 
 # install 
@@ -48,24 +48,19 @@ the system must correlate both streams to compute efficiency and detect anomalie
   npm run start:dev
 
 # Docker build & start device
-
-  1. docker-compose up --build
-  2. docker-compose up -d --build
+  docker-compose up --build
   
-  # Everything is Running
+# Everything is Running
     docker ps
   
-  # Running
-   1. http://localhost:3000/
-    
-      fleet ingestion engine running
+# Running
+  http://localhost:3000/
+  fleet ingestion engine running
   
 
 ## API Overview
 
 ### 1. Ingestion API
-
-
 Accepts two payload types:
 
 **Vehicle Telemetry**
@@ -79,7 +74,7 @@ A single request must contain **either `vehicleId` or `meterId`**, never both.
 ---
 
 ### Vehicle Telemetry Payload
-
+#Api - http://localhost:3000/v1/ingest
 ```json
 {
   "vehicleId": "EV-1",
@@ -107,6 +102,7 @@ A single request must contain **either `vehicleId` or `meterId`**, never both.
 4. Avoids full table scans by querying only the last 24 hours.
 
 efficiency = total_dc_delivered / total_ac_consumed
+#Api  - http://localhost:3000/v1/analytics/performance/{{vehicleId}}
 
 {
   "vehicleId": "EV-1",
